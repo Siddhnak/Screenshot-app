@@ -8,17 +8,21 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Paths;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class ScreenshotServiceImpl implements ScreenshotService {
 
-    private static final String SCREENSHOT_DIRECTORY = "C:\\Users\\Siddhant Naik\\Desktop\\Screenshot Proj\\";
+    private static final String SAVE_DIR = "C:\\Users\\Siddhant Naik\\Desktop\\Screenshot Proj\\";
 
 
     @Override
     public String takeScreenshot(String url) throws IOException {
-        String fileName = "screenshot.png";
-        String filePath = SCREENSHOT_DIRECTORY + fileName;
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        String fileName = "screenshot_" + timestamp + ".png";
+        String filePath = SAVE_DIR + fileName;
+
         try (Playwright playwright = Playwright.create()) {
             Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(true));
             Page page = browser.newPage();
